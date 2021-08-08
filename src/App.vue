@@ -12,5 +12,15 @@ export default {
   }
 }
 </script>
-<style scoped src="./assets/styles/app.css">
+<style>
+.container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+.card{
+  display: flex;
+}
+.card-image{
+  width: 150px;
+}
 </style>
