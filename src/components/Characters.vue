@@ -5,9 +5,27 @@
       alt=""
       class="image-banner"
     />
-    <input type="text" v-model="search" class="search"/>
+    <input
+      type="text"
+      v-model="search"
+      class="search"
+      placeholder="Buscar personaje"
+    />
   </div>
-  <p>Mostrar favoritos:<span @click="activeFavorite"><font-awesome-icon :icon="starIcon" :style="{color:this.color }"/></span></p>
+  <div class="categories">
+    <ul>
+      <li><a href="#" @click="getAll()">All</a></li>
+      <li><a href="#" @click="getByGender('unknow')">Unknow</a></li>
+      <li><a href="#" @click="getByGender('female')">Female</a></li>
+      <li><a href="#" @click="getByGender('Male')">Male</a></li>
+      <li><a href="#" @click="getByGender('genderless')">Genderless</a></li>
+    </ul>
+  </div>
+  <p>
+    Mostrar favoritos:<span @click="activeFavorite"
+      ><font-awesome-icon :icon="starIcon" :style="{ color: this.color }"
+    /></span>
+  </p>
   <div class="container">
     <div
       v-for="(character, index) in characters"
@@ -31,7 +49,20 @@
           <span>First see in</span>
           <span>{{ character.origin.name }}</span>
         </div>
-        <button @click="favorito(character.id)">Favorito</button>
+        <button @click="favorito(character.id)">
+          <font-awesome-icon
+            :icon="starIcon"
+            :style="[
+              this.favoritos.find(function(value) {
+                if (value == character.id) {
+                  return true;
+                }
+              })
+                ? { color: 'yellow' }
+                : { color: 'gray' },
+            ]"
+          />
+        </button>
       </div>
     </div>
     <div v-show="characters.length == 0">
@@ -42,11 +73,11 @@
 </template>
 <script>
 import axios from "axios";
-import { faStar } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 export default {
-  components:{
-    FontAwesomeIcon
+  components: {
+    FontAwesomeIcon,
   },
   data() {
     return {
@@ -54,15 +85,15 @@ export default {
       favoritos: [],
       search: null,
       isFavorite: false,
-      starIcon:faStar,
-      color:'gray'
+      starIcon: faStar,
+      color: "gray",
     };
   },
   mounted() {
     this.getAll();
   },
   methods: {
-    favorito: function (id) {
+    favorito: function(id) {
       if (!this.favoritos.includes(id)) {
         this.favoritos.push(id);
       } else {
@@ -70,7 +101,7 @@ export default {
       }
       console.log(this.favoritos);
     },
-    getAll: function () {
+    getAll: function() {
       axios
         .get("https://rickandmortyapi.com/api/character")
         .then((response) => {
@@ -81,7 +112,7 @@ export default {
           console.error(error);
         });
     },
-    getBySearch: function (name) {
+    getBySearch: function(name) {
       axios
         .get(`https://rickandmortyapi.com/api/character/?name=${name}`)
         .then((response) => {
@@ -92,7 +123,7 @@ export default {
           this.characters = [];
         });
     },
-    getByFavorite: function () {
+    getByFavorite: function() {
       if (this.favoritos.length > 0) {
         axios
           .get(`https://rickandmortyapi.com/api/character/${this.favoritos}`)
@@ -108,29 +139,39 @@ export default {
           .catch((error) => {
             console.log(error);
           });
-      }else{
+      } else {
         this.characters = [];
       }
     },
-    cleanFilter: function () {
+    getByGender: function(gender) {
+      axios
+        .get(`https://rickandmortyapi.com/api/character/?gender=${gender}`)
+        .then((response) => {
+          this.characters = response.data.results;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    cleanFilter: function() {
       this.getAll();
       this.search = "";
     },
-    activeFavorite: function () {
+    activeFavorite: function() {
       if (!this.isFavorite) {
         this.isFavorite = true;
-        this.color = 'yellow'
+        this.color = "yellow";
       } else {
         this.isFavorite = false;
-        this.color = 'gray'
+        this.color = "gray";
       }
     },
   },
   watch: {
-    search: function (value) {
+    search: function(value) {
       this.getBySearch(value);
     },
-    isFavorite: function (value) {
+    isFavorite: function(value) {
       if (value) {
         this.getByFavorite();
       } else {
