@@ -16,17 +16,18 @@ export default {
 body {
   margin: unset;
 }
-.container {
+.container-character {
   display: grid;
   grid-template-columns: auto auto auto;
   grid-gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
-.card {
+.card-character {
   display: flex;
   border: 1px solid lightgrey;
   border-radius: 10px;
+  position: relative;
 }
 .card-image {
   width: 150px;
@@ -48,7 +49,8 @@ body {
   top: 40%;
   background-color: black;
 }
-.search::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.search::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: white;
   opacity: 1; /* Firefox */
 }
@@ -57,9 +59,9 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  /* background-color: #333;÷\ */
   position: relative;
-  left: 35%;
+  display: flex;
+  justify-content: center;
 }
 
 li {
@@ -79,5 +81,43 @@ li a:hover {
 }
 .categories {
   background: gray;
+}
+.add-favorite {
+  position: absolute;
+  left: 30%;
+  top: 70%;
+  background-color: lightgray;
+  border: unset;
+  border-radius: 50%;
+}
+.info-text {
+  font-size: 12px;
+}
+.info-character {
+  padding-left: 10px;
+}
+.close-character {
+  position: absolute;
+  top: 20px;
+  background-color: white;
+  right: 20px;
+}
+.image-modal{
+  width: 100%;
+  height: 300px;
+}
+.modal-header{
+  padding: unset;
+}
+.personal-data{
+  text-align: center;
+}
+.name-character{
+  font-weight: bold;
+  font-size: 20px;
+}
+.image-character-modal{
+  width: 150px;
+  border-radius: 50%;
 }
 </style>
